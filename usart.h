@@ -1,4 +1,4 @@
-/* This is a simple usart driver for ATMEGA328P. 
+/* This is a simple usart driver for ATMEGA328P.
 	Author: John New
 	Last Revision: 6-5-14
 */
@@ -10,14 +10,13 @@
 #include <avr/io.h>
 
 // This struct allows interrupt driver multi-frame transfers.
-typedef struct
-{
-	volatile uint8_t send_buffer[256];
-	volatile uint8_t recv_buffer[256];
-	volatile uint8_t send_buffer_head;
-	volatile uint8_t send_buffer_tail;
-	volatile uint8_t recv_buffer_head;
-	volatile uint8_t recv_buffer_tail;
+typedef struct {
+    volatile uint8_t send_buffer[256];
+    volatile uint8_t recv_buffer[256];
+    volatile uint8_t send_buffer_head;
+    volatile uint8_t send_buffer_tail;
+    volatile uint8_t recv_buffer_head;
+    volatile uint8_t recv_buffer_tail;
 } usart;
 
 usart usart_driver;
