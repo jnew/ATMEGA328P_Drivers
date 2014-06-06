@@ -40,6 +40,9 @@ void usart0_disable_recv()
 {
 	// disable recv
 	UCSR0B &= ~0x10;
+	
+	// disable RX complete interrupt
+	UCSR0B &= ~(1 << RXCIE0);
 }
 
 void usart0_send_byte(uint8_t data)
@@ -78,7 +81,9 @@ uint8_t usart0_recv_line(uint8_t *data)
 {
 	uint8_t i = usart_driver.recv_buffer_tail;
 	uint8_t line_index = 0;
-	while(usart_driver.recv_buffer_head != i)
+	
+	// work through the buffer from tail to head looking for delimiters
+	for(i; usart_driver.recv_buffer_head != i; i++)
 	{
 		if(usart_driver.recv_buffer[i] == '\r')
 		{
@@ -86,9 +91,8 @@ uint8_t usart0_recv_line(uint8_t *data)
 			{
 				data[line_index++] = usart_driver.recv_buffer[usart_driver.recv_buffer_tail];
 			}
-			return line_index; // got a line
+			return line_index; // got a line, here's how long
 		}
-		i++;
 	}
 	return 0; // no finished lines
 }

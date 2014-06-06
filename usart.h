@@ -44,7 +44,12 @@ void usart0_send_byte(uint8_t data);
 void usart0_send_string(uint8_t *data, uint8_t string_length);
 
 // Pull one byte out of the recieve buffer.
+// Returns number of bytes read.
 uint8_t usart0_recv_byte(uint8_t *data);
+
+// Pull one line, terminated by a \r, out of the recieve buffer.
+// Returns number of bytes read.
+uint8_t usart0_recv_line(uint8_t *data);
 
 // Transmit complete interrupt handler.
 void USART_TX_vect(void) __attribute__ ((signal));

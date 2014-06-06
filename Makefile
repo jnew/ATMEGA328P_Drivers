@@ -1,8 +1,8 @@
 OUT = blink
 PORT = COM5
 
-all: elf hex flash
-
+all: no_flash flash
+no_flash: elf hex
 elf:
 	avr-gcc -Os -DF_CPU=16000000L -mmcu=atmega328p -o $(OUT).elf blink.c usart.h usart.c
 hex:
