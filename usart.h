@@ -17,6 +17,7 @@ typedef struct {
     volatile uint8_t send_buffer_tail;
     volatile uint8_t recv_buffer_head;
     volatile uint8_t recv_buffer_tail;
+    volatile uint8_t lines_in_buffer;
 } usart;
 
 usart usart_driver;

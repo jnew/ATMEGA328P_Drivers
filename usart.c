@@ -77,14 +77,18 @@ uint8_t usart0_recv_line(uint8_t *data)
 {
     uint8_t i = usart_driver.recv_buffer_tail;
     uint8_t line_index = 0;
-
-    // work through the buffer from tail to head looking for delimiters
-    for(i; usart_driver.recv_buffer_head != i; i++) {
-        if(usart_driver.recv_buffer[i] == '\r') {
-            for(usart_driver.recv_buffer_tail; usart_driver.recv_buffer_tail <= i; usart_driver.recv_buffer_tail++) {
-                data[line_index++] = usart_driver.recv_buffer[usart_driver.recv_buffer_tail];
+    if(usart_driver.lines_in_buffer > 0) {
+        // work through the buffer from tail to head looking for delimiters
+        for(i; usart_driver.recv_buffer_head != i; i++) {
+            if(usart_driver.recv_buffer[i] == '\r') {
+                for(usart_driver.recv_buffer_tail; usart_driver.recv_buffer_tail < i; usart_driver.recv_buffer_tail++) {
+                    data[line_index++] = usart_driver.recv_buffer[usart_driver.recv_buffer_tail];
+                }
+                usart_driver.recv_buffer_tail++;
+                data[line_index] = '\0'; // swap line break for null terminator
+                return line_index; // got a line, here's how long
+                usart_driver.lines_in_buffer--;
             }
-            return line_index; // got a line, here's how long
         }
     }
     return 0; // no finished lines
@@ -97,9 +101,12 @@ void USART_TX_vect(void)
 
 void USART_RX_vect(void)
 {
-    usart_driver.recv_buffer[usart_driver.recv_buffer_head] = UDR0;
-    usart0_send_byte(usart_driver.recv_buffer[usart_driver.recv_buffer_head]);
-    usart_driver.recv_buffer_head++;
+    uint8_t data = UDR0;
+    if(data == '\r') {
+        usart_driver.lines_in_buffer++;
+    }
+    usart_driver.recv_buffer[usart_driver.recv_buffer_head++] = data;
+    usart0_send_byte(data);
 }
 
 void USART_UDRE_vect(void)
