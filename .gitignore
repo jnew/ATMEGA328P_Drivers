@@ -1,2 +1,5 @@
 *.elf
 *.hex
+*.gch
+*.o
+*.out
