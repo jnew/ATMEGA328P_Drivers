@@ -1,4 +1,4 @@
-#include "adc.h"
+#include "../lib/adc.h"
 
 void adc_enable()
 {

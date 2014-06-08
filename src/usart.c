@@ -1,4 +1,4 @@
-#include "usart.h"
+#include "../lib/usart.h"
 
 void usart0_config()
 {

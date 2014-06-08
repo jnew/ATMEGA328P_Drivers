@@ -1,5 +1,5 @@
-#include "usart.h"
-#include "adc.h"
+#include "lib/usart.h"
+#include "lib/adc.h"
 #include <stdlib.h>
 #include <string.h>
 
