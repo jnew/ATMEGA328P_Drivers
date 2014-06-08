@@ -9,7 +9,7 @@
 #include <stdint.h>
 #include <avr/io.h>
 
-// This struct allows interrupt driver multi-frame transfers.
+// This struct allows interrupt driven multi-frame transfers.
 typedef struct {
     volatile uint8_t send_buffer[256];
     volatile uint8_t recv_buffer[256];
